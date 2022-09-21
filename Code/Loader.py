@@ -30,7 +30,7 @@ def combineDataSets(dataset, defaultValue = -10e10): #dataset should be "train",
         
     compounds = compounds1 #compuonds match
     labels = labels2 + labels1 #docking data then descriptors
-    compoundData = np.concatenate((data1,data2), axis=1) #connect the two data arrays together
+    compoundData = np.concatenate((data2,data1), axis=1) #connect the two data arrays together
     compoundData = compoundData.astype(float)
     
     return compounds, smiles, labels, compoundData, activities
