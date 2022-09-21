@@ -31,6 +31,7 @@ def combineDataSets(dataset, defaultValue = -10e10): #dataset should be "train",
     compounds = compounds1 #compuonds match
     labels = labels2 + labels1 #docking data then descriptors
     compoundData = np.concatenate((data1,data2), axis=1) #connect the two data arrays together
+    compoundData = compoundData.astype(float)
     
     return compounds, smiles, labels, compoundData, activities
 
@@ -52,7 +53,7 @@ def loadCompoundData(fileName, defValue = -10e10): #load a compound file descrip
     data = data[1:] #skip labels
     data = np.array(data) #np array
     data[data == ''] = defValue #replace empty strings with value
-    data.astype(float) #string -> floats
+    data = data.astype(np.float) #string -> floats
     
     return compounds, labels, data
 
@@ -79,6 +80,6 @@ def loadDockingData(fileName, defValue = -10e10): #load a docking data file, fir
     
     docking = np.array(docking)
     docking[docking == ''] = defValue #replace empty strings with value
-    docking.astype(float) #string -> floats
+    docking = docking.astype(np.float) #string -> floats
     
     return compounds, smiles, labels, docking, activities
