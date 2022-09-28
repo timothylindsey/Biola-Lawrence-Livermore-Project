@@ -12,7 +12,7 @@ def getValidate(defaultValue = -10e10):
     return combineDataSets("validate", defaultValue=defaultValue)
 
 
-def combineDataSets(dataset, defaultValue = -10e10): #dataset should be "train", "test" or "validate"
+def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10): #dataset should be "train", "test" or "validate"
     #get descriptor and docking data respectively
     #if you're not on windows, perish "/" reigns superior
     compounds1, labels1, data1 = loadCompoundData("../Data/" + dataset + "DataDescriptors.csv", defValue = defaultValue)
@@ -32,6 +32,10 @@ def combineDataSets(dataset, defaultValue = -10e10): #dataset should be "train",
     labels = labels2 + labels1 #docking data then descriptors
     compoundData = np.concatenate((data2,data1), axis=1) #connect the two data arrays together
     compoundData = compoundData.astype(float)
+    
+    #replace inf with a real number
+    compoundData[np.isinf(compoundData)] = defInf
+    compoundData[np.isneginf(compoundData)] = -defInf
     
     return compounds, smiles, labels, compoundData, activities
 
