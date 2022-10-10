@@ -1,18 +1,31 @@
 import csv
 import numpy as np
+import random #for shuffling
+
+def shuffleData(compounds, smiles, compoundData, activities):
+    group = list(zip(compounds, smiles, compoundData, activities))
+    random.shuffle(group) #shuffle together to preserve orders
+    
+    compounds, smiles, compoundData, activities = zip(*group) #unpack
+    #return each type to numpy array
+    compounds = np.array(compounds)
+    smiles = np.array(smiles)
+    compoundData = np.array(compoundData)
+    activities = np.array(activities)
+    
+    return compounds, smiles, compoundData, activities
+
+def getTrain(defaultValue = -10e10, shuffle=True):
+    return combineDataSets("train", defaultValue=defaultValue, shuffle=shuffle)
+
+def getTest(defaultValue = -10e10, shuffle=True):
+    return combineDataSets("test", defaultValue=defaultValue, shuffle=shuffle)
+
+def getValidate(defaultValue = -10e10, shuffle=True):
+    return combineDataSets("validate", defaultValue=defaultValue, shuffle=shuffle)
 
 
-def getTrain(defaultValue = -10e10):
-    return combineDataSets("train", defaultValue=defaultValue)
-
-def getTest(defaultValue = -10e10):
-    return combineDataSets("test", defaultValue=defaultValue)
-
-def getValidate(defaultValue = -10e10):
-    return combineDataSets("validate", defaultValue=defaultValue)
-
-
-def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10): #dataset should be "train", "test" or "validate"
+def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10, shuffle=True): #dataset should be "train", "test" or "validate"
     #get descriptor and docking data respectively
     #if you're not on windows, perish "/" reigns superior
     compounds1, labels1, data1 = loadCompoundData("../Data/" + dataset + "DataDescriptors.csv", defValue = defaultValue)
@@ -36,6 +49,9 @@ def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10): #dataset sh
     #replace inf with a real number
     compoundData[np.isinf(compoundData)] = defInf
     compoundData[np.isneginf(compoundData)] = -defInf
+    
+    if(shuffle): #mix up the order
+        compounds, smiles, compoundData, activities = shuffleData(compounds, smiles, compoundData, activities)
     
     return compounds, smiles, labels, compoundData, activities
 
