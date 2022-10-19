@@ -157,4 +157,12 @@ def toClassification(Y, point=4): # The resulting array will contain values of -
     
     return newY
 
+def toBinaryClassification(Y, point=4): # The resulting array will contain values of -1 if it is below 4 and 1 if it is above
+    Y = np.array(Y)
+    newY = np.copy(Y)
+    newY[Y > point] = 1
+    newY[Y <= point] = 0
+    
+    return newY
+
 ### classification --------------------------------------------------------------- END ---
