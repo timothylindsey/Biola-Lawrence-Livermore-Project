@@ -16,7 +16,7 @@ from sklearn.decomposition import PCA
 #[143:228] fr_some_chemical? (85 total)
 
 #if an endDims is not positive (-1 or 0) do not apply the PCA for this range
-def applyPCA(labels, trainX, testX, valX, endDims=[3,3,3,3,3,3,3,5]): #apply PCA to data
+def applyPCA(labels, trainX, testX, valX, endDims=[3,3,3,3,3,3,3,5], muted = False): #apply PCA to data
     #pca info, format: [endSize, beginLabel, endLabel (inclusive), baseName]
     #endSize better be a smaller dimension than the incoming dimensions
     bcutInfo =    [endDims[0], "bcut2d_mwhi", "bcut2d_mrlow", "bcut2d"]
@@ -51,9 +51,9 @@ def applyPCA(labels, trainX, testX, valX, endDims=[3,3,3,3,3,3,3,5]): #apply PCA
         newTrain[:,begin:begin+info[0]] = pca.transform(trainX[:,begin:end]) #replace data, note unneded columns remain
         newTest[:,begin:begin+info[0]] = pca.transform(testX[:,begin:end]) #transform based on training fit
         newVal[:,begin:begin+info[0]] = pca.transform(valX[:,begin:end]) #transform based on training fit
-        
-        print(info[3], "retention:", pca.explained_variance_ratio_)
-        print("\ttotal:", str(sum(pca.explained_variance_ratio_)*100)+'%')
+        if(not muted):
+            print(info[3], "retention:", pca.explained_variance_ratio_)
+            print("\ttotal:", str(sum(pca.explained_variance_ratio_)*100)+'%')
         
         for i in range(0, info[0]): #set new labels
             newLabels[begin+i] = info[3] + '_' + str(i) #new label, numbered
