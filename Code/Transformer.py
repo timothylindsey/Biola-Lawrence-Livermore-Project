@@ -145,6 +145,14 @@ def normalizeData(train,test,val, newMean=0, newStd=1): #normalization is only b
     
     return newTrain, newTest, newVal
 
+def setMeanZero(train,test,val): #shift the mean to zero, used for PCA
+    oldMean = np.mean(train, axis=0) #array of means
+    
+    newTrain = (train - oldMean)
+    newTest = (test - oldMean)
+    newVal = (val - oldMean)
+    return newTrain, newTest, newVal
+
 ### normalizing ------------------------------------------------------------------ END ---
 
 ### classification -----------------------------------------------------------------------
