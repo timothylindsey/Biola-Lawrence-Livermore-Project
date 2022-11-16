@@ -1,0 +1,1 @@
+Regression SVR, Ein Error:  0.3554315571414324Eval Error:  2.215028194809491. See Regression Models (SVM and NN) jupyter file for details.
