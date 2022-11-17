@@ -1,0 +1,1 @@
+See Regression Models (SVR and NN) code file. Used for a combo regression model, svm used for binary classification, then either SVR or NN for regression of high activity model. Use constant guess of about .7 for best mean square error. This is the SVM Portion.
