@@ -1,6 +1,7 @@
 import pickle
 import tensorflow as tf
 from sklearn import svm
+from keras.models import load_model
 
 #this file loads svms, nn in an easy format
 
@@ -11,8 +12,7 @@ def load(fileName, verbose=True): #i.e. svmModel.pkl
         with open('../Models/' + fileName,'rb') as f:
             model = pickle.load(f)
     elif(form == "h5" or form == "H5"): #tensorflow NN
-        model = create_model()
-        model.load_weights('../Models/' + fileName)
+        model = load_model('../Models/' + fileName)
     if(verbose): #print out model description
         printDescription(fileName)
     return model
