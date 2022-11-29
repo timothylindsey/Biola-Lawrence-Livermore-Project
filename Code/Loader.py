@@ -15,21 +15,28 @@ def shuffleData(compounds, smiles, compoundData, activities):
     
     return compounds, smiles, compoundData, activities
 
-def getTrain(defaultValue = -10e10, shuffle=True):
-    return combineDataSets("train", defaultValue=defaultValue, shuffle=shuffle)
+def getTrain(defaultValue = -10e10, shuffle=True, scaffold=False):
+    return combineDataSets("train", defaultValue=defaultValue, shuffle=shuffle, scaffold=scaffold)
 
-def getTest(defaultValue = -10e10, shuffle=True):
-    return combineDataSets("test", defaultValue=defaultValue, shuffle=shuffle)
+def getTest(defaultValue = -10e10, shuffle=True, scaffold=False):
+    return combineDataSets("test", defaultValue=defaultValue, shuffle=shuffle, scaffold=scaffold)
 
-def getValidate(defaultValue = -10e10, shuffle=True):
-    return combineDataSets("validate", defaultValue=defaultValue, shuffle=shuffle)
+def getValidate(defaultValue = -10e10, shuffle=True, scaffold=False):
+    return combineDataSets("validate", defaultValue=defaultValue, shuffle=shuffle, scaffold=scaffold)
 
 
-def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10, shuffle=True): #dataset should be "train", "test" or "validate"
+def combineDataSets(dataset, defaultValue = -10e10, defInf = 10e10, shuffle=True, scaffold=False): #dataset should be "train", "test" or "validate"
     #get descriptor and docking data respectively
     #if you're not on windows, perish "/" reigns superior
-    compounds1, labels1, data1 = loadCompoundData("../Data/" + dataset + "DataDescriptors.csv", defValue = defaultValue)
-    compounds2, smiles, labels2, data2, activities = loadDockingData("../Data/" + dataset + "DockingData.csv", defValue = defaultValue)
+    compounds1, labels1, data1 = 0,0,0
+    compounds2, smiles, labels2, data2, activities = 0,0,0,0,0
+    
+    if(scaffold): #scaffold split
+        compounds1, labels1, data1 = loadCompoundData("../Data/" + dataset + "DataScaffoldDescriptors.csv", defValue = defaultValue)
+        compounds2, smiles, labels2, data2, activities = loadDockingData("../Data/" + dataset + "DockingDataScaffold.csv", defValue = defaultValue)
+    else: #random split
+        compounds1, labels1, data1 = loadCompoundData("../Data/" + dataset + "DataDescriptors.csv", defValue = defaultValue)
+        compounds2, smiles, labels2, data2, activities = loadDockingData("../Data/" + dataset + "DockingData.csv", defValue = defaultValue)
     
     #format and connect data
     
